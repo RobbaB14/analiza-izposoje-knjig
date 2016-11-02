@@ -2,6 +2,7 @@ import re
 import csv
 import requests
 
+
 def zapisi_vsebino():
     #vsebino vseh spletnih strani shrani v slovar s ključi (l,m)
     vsebina = {}
@@ -50,16 +51,6 @@ def zapisi_csv(slovarji, imena_polj, ime_datoteke):
         for slovar in slovarji:
             writer.writerow(slovar)
 
-''''
-def shrani(imenik):
-    for a in imenik.keys():
-        dela = []
-        for delo in re.finditer(regex_dela, imenik[a]):
-            dela.append(pocisti_delo(delo))
-        zapisi_csv(dela, ['naslov'], 'l{}m{}.csv'.format(a[0], a[1]))
-#'naslov', 'avtor', 'izposoja', 'rezervacija'
-'''
-
 def beri(ime_datoteke):
     a = open(ime_datoteke, 'r', encoding='utf-8')
     b = a.read()
@@ -70,9 +61,6 @@ def beri(ime_datoteke):
 def zapisi_csv(ime_txt_datoteke, ime_csv_datoteke):
     #vzame vsebino prve datoteke, poišče podatke in oblikuje tabelo, ki jo shrani v csv datoteko
     vsebina = beri(ime_txt_datoteke)
-    #vsebina.replace('Ä', 'č')
-    #vsebina.replace('Å¾', 'ž')
-    #9ikvsebina.replace('Å¡', 'š')
     podatki = re.finditer(regex_dela, vsebina)
     slovarji = []
     for a in podatki:
@@ -96,5 +84,3 @@ for l in range(2, 17):  # šteje po letih
     else:  # za leto 2016 imamo podatke samo do vključno septembra
         for m in range(1, 10):  # šteje po mesecih
             zapisi_csv('leto20{}mesec{}.txt'.format(str(l).zfill(2), m), 'leto20{}mesec{}.csv'.format(str(l).zfill(2),m))
-
-
