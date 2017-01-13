@@ -28,6 +28,7 @@ def shrani_vsebino(imenik):
         a.close()
 
 
+
 regex_dela = re.compile(
     r"<tr><FORM NAME='Id-ji' METHOD='POST' ACTION='cobiss-si-id\.asp'><td align=right class='small\d*?'>\d*?\.</td>.*?"
     r"<td align=left class='small\d*?'>(?P<naslov>.*?)</td>.*?"
@@ -43,9 +44,7 @@ def pocisti_delo(delo):
     podatki['avtor'] = podatki['avtor']
     podatki['izposoja'] = int(podatki['izposoja'])
     podatki['rezervacija'] = int(podatki['rezervacija'])
-    #for a in podatki:
-    """a['avtor'] = a['avtor'].capitalize()
-    a['naslov']= a['naslov'].capitalize()"""
+    # ker avtorji v podatkih, ki jih zajemamo niso dosledno zapisani z malimi črkami z veliko začetnico, to popravimo
     z = podatki['avtor'].split(' ')
     z[0] = z[0].capitalize()
     a = ''
@@ -63,6 +62,7 @@ def beri(ime_datoteke):
     return b
 
 
+# ker bo analiza podatkov lažja, če vse podatke združimo v eno tabelo, to tudi naredimo:
 def enotni_csv():
     txt_files = [f for f in listdir('.\\') if isfile(join('.\\', f)) and f[-4:]=='.txt']
     with open('podatki.csv', 'w', encoding='utf-8') as csv_dat:
@@ -83,17 +83,8 @@ def enotni_csv():
                 writer.writerow(slovar)
 
 #naredimo .txt file z vsebino strani
-#vsebina = zapisi_vsebino()
-#shrani_vsebino(vsebina)
+vsebina = zapisi_vsebino()
+shrani_vsebino(vsebina)
 
-#naredimo tabele
-"""for l in range(2, 17):  # šteje po letih
-    if l <= 15:
-        for m in range(1, 13):  # šteje po mesecih
-            zapisi_csv('leto20{}mesec{}.txt'.format(str(l).zfill(2),m), 'leto20{}mesec{}.csv'.format(str(l).zfill(2),m))
-
-    else:  # za leto 2016 imamo podatke samo do vključno septembra
-        for m in range(1, 10):  # šteje po mesecih
-            zapisi_csv('leto20{}mesec{}.txt'.format(str(l).zfill(2), m), 'leto20{}mesec{}.csv'.format(str(l).zfill(2),m))
-"""
-enotni_csv()
+#naredimo csv s tabelo z vsemi podatki
+enotni_csv ()
